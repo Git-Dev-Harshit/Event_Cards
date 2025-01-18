@@ -20,7 +20,7 @@ def create_payload(folder_name, template_id, message):
                 number = filename.split(".")[0]
                 formatted_number = "91" + number
 
-                media_url = f"{hostname}/{folder_name}/{filename}"
+                media_url = f"{hostname}/{folder_path}/{filename}"
 
                 entry = {
                     "number": formatted_number,

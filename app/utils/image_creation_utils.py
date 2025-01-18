@@ -5,9 +5,48 @@ from dotenv import load_dotenv
 from PIL import Image, ImageDraw, ImageFont
 import pandas as pd
 from app.utils.logger import logger
-
+from werkzeug.utils import secure_filename
 
 load_dotenv()
+
+def delete_files_in_folders(sub_folder):
+    # List of directories to delete files from
+    directories = [
+        f'output_images/{sub_folder}',
+    ]
+
+    for directory in directories:
+        if os.path.exists(directory):
+            for filename in os.listdir(directory):
+                file_path = os.path.join(directory, filename)
+
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+                    print(f"Deleted file: {file_path}")
+                else:
+                    print(f"Skipping non-file: {file_path}")
+        else:
+            print(f"Directory not found: {directory}")
+
+def save_uploaded_file(file, upload_folder=os.getenv('INPUT_FILE_FOLDER'), filename=os.getenv('INPUT_FILE_NAME')):
+    """
+    Save the uploaded file to the specified folder with a given filename.
+
+    :param file: The uploaded file
+    :param upload_folder: Folder to save the file in
+    :param filename: Filename to save the file as
+    :return: The path where the file was saved
+    """
+    if not os.path.exists(upload_folder):
+        os.makedirs(upload_folder)
+
+    filename = secure_filename(filename)
+
+    file_path = os.path.join(upload_folder, filename)
+
+    file.save(file_path)
+
+    return file_path
 
 def read_google_sheet(sheet_name):
     try:
@@ -23,6 +62,7 @@ def read_google_sheet(sheet_name):
         creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
 
         client = gspread.authorize(creds)
+        logger.info("Google sheet credentials authorized successfully.")
 
         sheet = client.open_by_key(spreadsheet_id).worksheet(sheet_name)
 
@@ -37,15 +77,27 @@ def read_google_sheet(sheet_name):
         return data
 
     except Exception as e:
-        logger.error(f"Error while fetching associated stocks from index: {e}")
+        logger.error(f"Error while fetching data from google sheet: {e}")
         return pd.DataFrame()
 
 def generate_personalized_images(data, folder_name, image_width, image_height, font_size, starting_point, card_tag, regards_color,
                                  name_color, value_color, vertical_spacing):
     try:
+        image_width = int(image_width)
+        image_height = int(image_height)
+        font_size = int(font_size)
+        starting_point = int(starting_point)
+        vertical_spacing = int(vertical_spacing)
+
         output_folder = f"output_images/{folder_name}"
         img_path = os.getenv('IMAGE_PATH')
         os.makedirs(output_folder, exist_ok=True)
+
+        print("Font Size", type(font_size))
+        print("Starting Point", type(starting_point))
+        print("Vertical Spacing", type(vertical_spacing), vertical_spacing)
+        print("Image hight", type(image_height))
+        print("Image Width", type(image_width))
 
         # Load the font
         font_path = "arialbd.ttf"
@@ -81,3 +133,4 @@ def generate_personalized_images(data, folder_name, image_width, image_height, f
 
     except Exception as e:
         logger.error(f"Error while creating images: {e}")
+        print(f"Error while creating images: {e}")

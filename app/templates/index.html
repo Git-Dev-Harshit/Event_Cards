@@ -9,14 +9,14 @@
 </head>
 <body>
     <div class="form-container">
-        <form id="dynamicForm" class="centered-form" method="POST">
+        <form id="dynamicForm" class="centered-form" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="textarea">Message to send with images:</label>
                 <textarea id="textarea" name="textarea" rows="4" placeholder="Enter your message..." required></textarea>
             </div>
             <div class="form-group">
                 <label for="file">Upload File (Only .jpg):</label>
-                <input type="file" id="file" name="file" accept=".jpg" required>
+                <input type="file" id="file" name="file" accept="jpg,.jpeg,.JPG,.JPEG" required>
             </div>
             <div class="form-group">
                 <label for="selection">Select Category:</label>
