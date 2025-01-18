@@ -2,76 +2,134 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f7f4f3;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e9ecef; /* Softer background color */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: auto; /* Allow scrolling */
 }
 
 /* Form Container */
 .form-container {
     width: 100%;
-    max-width: 400px;
-    padding: 20px;
+    max-width: 600px; /* Reduced max-width for a smaller form */
+    padding: 20px; /* Reduced padding for a more compact feel */
     background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px; /* Slightly more rounded corners */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
 /* Centered Form */
 .centered-form {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    flex-wrap: wrap; /* Allow wrapping for two columns */
+    gap: 15px; /* Equal distance between columns */
 }
 
 /* Form Group */
 .form-group {
     display: flex;
     flex-direction: column;
+    gap: 6px; /* Reduced gap for better spacing */
+    flex: 1 1 calc(50% - 7.5px); /* Two columns with equal width and spacing */
 }
 
+/* Labels */
 label {
     font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
+    color: #495057; /* Darker color for better contrast */
+    font-size: 14px; /* Reduced font size */
 }
 
-textarea, input[type="file"], select, input[type="text"] {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+/* Input and Select Fields */
+textarea,
+input[type="file"],
+input[type="number"],
+input[type="text"],
+select,
+input[type="color"] {
+    padding: 12px; /* Reduced padding for comfort */
+    font-size: 15px; /* Reduced font size */
+    border: 1px solid #ced4da; /* Softer border color */
+    border-radius: 8px;
+    background-color: #f8f9fa; /* Softer background for inputs */
+    box-sizing: border-box;
+    transition: border-color 0.3s, background-color 0.3s; /* Smooth transition */
 }
 
-textarea:focus, input:focus, select:focus, input[type="text"]:focus {
+textarea:focus,
+input:focus,
+select:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="color"]:focus {
     outline: none;
-    border-color: #b8c1ec;
-    background-color: #eef0ff;
+    border-color: #80bdff; /* Brighter focus color */
+    background-color: #e9f5ff; /* Light blue background on focus */
 }
 
+/* Button Styles */
 button {
-    padding: 10px;
-    font-size: 16px;
+    padding: 12px; /* Reduced padding */
+    font-size: 15px; /* Reduced font size */
     font-weight: bold;
     color: #ffffff;
-    background-color: #9dbad7;
+    background-color: #007bff; /* Bootstrap primary color */
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s; /* Added transform for effect */
 }
 
 button:hover {
-    background-color: #789ac4;
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Adjusted Styles for New Fields */
+
+/* Input fields for numbers */
+input[type="number"] {
+    width: 100%;
+}
+
+/* Color Pickers */
+input[type="color"] {
+    width: 100%;
+    padding: 0;
+    height: 30px; /* Reduced height */
+}
+
+/* Select Fields */
+select {
+    width: 100%;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .form-container {
-        max-width: 90%;
+        max-width: 90%; /* Ensuring the form is more flexible */
+        padding: 15px; /* Adjusted padding */
+    }
+
+    /* Adjust padding and font size on smaller screens */
+    .centered-form {
+        gap: 10px; /* Adjusted gap */
+    }
+
+    .form-group {
+        flex: 1 1 100%; /* Stack columns on smaller screens */
+    }
+
+    label {
+        font-size: 13px; /* Adjusted font size */
+    }
+
+    button {
+        font-size: 14px; /* Adjusted font size */
+        padding: 10px; /* Adjusted padding */
     }
 }

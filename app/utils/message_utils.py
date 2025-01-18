@@ -18,7 +18,7 @@ def create_payload(folder_name, template_id, message):
             number = filename.split(".")[0]
             formatted_number = "91" + number
 
-            media_url = f"{hostname}{folder_name}/{filename}"
+            media_url = f"{hostname}/{folder_name}/{filename}"
 
             entry = {
                 "number": formatted_number,
@@ -32,7 +32,6 @@ def create_payload(folder_name, template_id, message):
             payload["data"].append(entry)
 
     return payload
-
 
 def send_whatsapp_message(payload):
     api_url = os.getenv("API_URL")
