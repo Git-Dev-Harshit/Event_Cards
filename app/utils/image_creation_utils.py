@@ -93,13 +93,6 @@ def generate_personalized_images(data, folder_name, image_width, image_height, f
         img_path = os.getenv('IMAGE_PATH')
         os.makedirs(output_folder, exist_ok=True)
 
-        print("Font Size", type(font_size))
-        print("Starting Point", type(starting_point))
-        print("Vertical Spacing", type(vertical_spacing), vertical_spacing)
-        print("Image hight", type(image_height))
-        print("Image Width", type(image_width))
-
-        # Load the font
         font_path = "arialbd.ttf"
         font = ImageFont.truetype(font_path, font_size)
 
