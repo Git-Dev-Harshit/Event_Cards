@@ -4,20 +4,22 @@ import os
 from dotenv import load_dotenv
 from PIL import Image, ImageDraw, ImageFont
 import pandas as pd
+from app.utils.logger import logger
 
 
 load_dotenv()
 
 def read_google_sheet(sheet_name):
-    spreadsheet_id = os.getenv('GOOGLE_SHEET_ID')
-
-    scope = [
-        "https://spreadsheets.google.com/feeds",
-        "https://www.googleapis.com/auth/drive",
-        "https://www.googleapis.com/auth/spreadsheets.readonly"
-    ]
-
     try:
+        logger.info("Fetching data from google sheet...")
+        spreadsheet_id = os.getenv('GOOGLE_SHEET_ID')
+
+        scope = [
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/drive",
+            "https://www.googleapis.com/auth/spreadsheets.readonly"
+        ]
+
         creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
 
         client = gspread.authorize(creds)
@@ -27,7 +29,7 @@ def read_google_sheet(sheet_name):
         raw_data = sheet.get_all_values()
 
         if not raw_data or len(raw_data) <= 1:
-            print("No records found in the sheet or the sheet is empty.")
+            logger.info("No records found in the sheet or the sheet is empty.")
             return pd.DataFrame()
 
         data = pd.DataFrame(raw_data[1:], columns=raw_data[0])
@@ -35,7 +37,7 @@ def read_google_sheet(sheet_name):
         return data
 
     except Exception as e:
-        print(f"Error while fetching associated stocks from index: {e}")
+        logger.error(f"Error while fetching associated stocks from index: {e}")
         return pd.DataFrame()
 
 def generate_personalized_images(data, folder_name, image_width, image_height, font_size, starting_point, card_tag, regards_color,
@@ -75,7 +77,7 @@ def generate_personalized_images(data, folder_name, image_width, image_height, f
             mobile_number = str(row['Mobile'])
             image_filename = f"output_images/{folder_name}/{mobile_number}.jpg"
             img.save(image_filename)
-            print(f"Image saved at: {image_filename}")
+            logger.info(f"Image saved at: {image_filename}")
 
     except Exception as e:
-        print(f"Error while creating images: {e}")
+        logger.error(f"Error while creating images: {e}")
